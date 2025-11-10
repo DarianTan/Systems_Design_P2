@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Update Anime</title>
+</head>
+<body>
+  <h1>Update Anime Entry</h1>
+
+  <form id="updateForm">
+    <label>Anime ID: <input name="id" required></label><br><br>
+    <label>New Rating: <input name="rating" type="number" min="0" max="10"></label><br><br>
+    <label>New Status:
+      <select name="status">
+        <option value="plan_to_watch">Plan to Watch</option>
+        <option value="watching">Watching</option>
+        <option value="completed">Completed</option>
+      </select>
+    </label><br><br>
+    <label>New Notes:<br><textarea name="notes" rows="4"></textarea></label><br><br>
+    <button type="submit">Update</button>
+  </form>
+
+  <script>
+    document.getElementById("updateForm").addEventListener("submit", async (e) => {
+      e.preventDefault();
+      const form = e.target;
+      const id = form.id.value;
+      const data = {
+        rating: Number(form.rating.value),
+        status: form.status.value,
+        notes: form.notes.value
+      };
+      const res = await fetch(`/api/entries/${id}`, {
+        method: "PUT",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(data)
+      });
+      const result = await res.json();
+      alert(result.message || result.error);
+    });
+  </script>
+</body>
+</html>

@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Anime Watchlist Viewer</title>
+</head>
+<body>
+  <h1>All Anime Entries</h1>
+  <ul id="animeList"></ul>
+
+  <script>
+    async function loadAnime() {
+      const res = await fetch("/api/entries");
+      const result = await res.json();
+      const list = document.getElementById("animeList");
+
+      result.data.forEach(anime => {
+        const li = document.createElement("li");
+        li.textContent = `${anime.title} — ${anime.status} (${anime.rating}/10)`;
+        list.appendChild(li);
+      });
+    }
+    loadAnime();
+  </script>
+</body>
+</html>

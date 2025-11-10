@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Add Anime</title>
+</head>
+<body>
+  <h1>Add New Anime</h1>
+  <form id="animeForm">
+    <label>Title: <input name="title" required></label><br><br>
+    <label>Status:
+      <select name="status">
+        <option value="plan_to_watch">Plan to Watch</option>
+        <option value="watching">Watching</option>
+        <option value="completed">Completed</option>
+      </select>
+    </label><br><br>
+    <label>Rating (0–10): <input name="rating" type="number" min="0" max="10"></label><br><br>
+    <label>Started Date: <input name="startedDate" type="date"></label><br><br>
+    <label>Finished Date: <input name="finishedDate" type="date"></label><br><br>
+    <label>Favorite Character: <input name="favoriteCharacter"></label><br><br>
+    <label>Notes:<br><textarea name="notes" rows="4"></textarea></label><br><br>
+    <button type="submit">Add Anime</button>
+  </form>
+
+  <script>
+    document.getElementById("animeForm").addEventListener("submit", async (e) => {
+      e.preventDefault();
+
+      const form = e.target;
+      const data = {
+        title: form.title.value,
+        status: form.status.value,
+        rating: Number(form.rating.value),
+        startedDate: form.startedDate.value,
+        finishedDate: form.finishedDate.value,
+        favoriteCharacter: form.favoriteCharacter.value,
+        notes: form.notes.value,
+      };
+
+      const res = await fetch("http://localhost:3000/api/entries", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(data)
+      });
+
+      const result = await res.json();
+      alert(result.message || result.error);
+      form.reset();
+    });
+  </script>
+</body>
+</html>
